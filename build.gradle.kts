@@ -14,6 +14,12 @@ repositories {
 dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:5.7.2")
     implementation("com.google.guava:guava:30.1.1-jre")
+    // https://mvnrepository.com/artifact/tools.jackson.core/jackson-databind
+    implementation("com.fasterxml.jackson.core:jackson-core:2.17.2")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:2.17.2")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.17.2")
+
+
 }
 
 application {
