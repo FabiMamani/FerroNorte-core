@@ -1,20 +1,36 @@
 package aplicacion;
 
+import interfaces.MedioComunicacion;
 import interfaces.Observable;
-import interfaces.Observer;
+import interfaces.Observador;
 
-import java.util.HashMap;
+import java.util.*;
 
 public class FerroNorte implements Observable {
-    private HashMap<String, Observer> observadores;
-    public FerroNorte(){
-        this.observadores = new HashMap<>();
+    List<String> estaciones;
+    Set<MedioComunicacion> mediosComunicacion;
+    Set<Observador> observadores;
+    public FerroNorte(Set<MedioComunicacion> medioComunicacion, List<String> estaciones){
+        this.mediosComunicacion = medioComunicacion;
+        this.estaciones = estaciones;
+        this.observadores = new HashSet<>();
+    }
+    public void notificar(String notificacion){
+        observadores.forEach(observador -> observador.actualizar(notificacion));
+    }
+
+    public Set<MedioComunicacion> obtenerMedioComunicacion(){
+        return this.mediosComunicacion;
     }
 
     @Override
-    public void agregarObservador(Observer o) {
-        if (o == null)
+    public void agregarObservador(MedioComunicacion medioComunicacion) {
+        if (medioComunicacion == null)
             throw new NullPointerException();
-        this.observadores.put(o.getClass().getSimpleName(), o);
+        this.mediosComunicacion.add(medioComunicacion);
+    }
+
+    public void agregarObservador(Observador o) {
+        observadores.add(o);
     }
 }
