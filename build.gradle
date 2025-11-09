@@ -5,8 +5,8 @@ plugins {
 }
 
 
-group = 'com.alulescano'
-version = '1.0.3'
+group = 'com.fabimamani'
+version = '1.0.0'
 
 repositories {
     mavenCentral()
@@ -39,7 +39,7 @@ publishing {
     repositories {
         maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/AluLescano/FerroInc")
+            url = uri("https://maven.pkg.github.com/FabiMamani/FerroNorte-core")
             credentials {
                 username = project.findProperty("gpr.user")?.toString() ?: System.getenv("GITHUB_ACTOR")
                 password = project.findProperty("gpr.key")?.toString() ?: System.getenv("GITHUB_TOKEN")
