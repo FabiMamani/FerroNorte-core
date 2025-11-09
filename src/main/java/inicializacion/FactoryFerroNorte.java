@@ -17,6 +17,7 @@ public class FactoryFerroNorte {
 
     public static final String defaultConfigPath = "config.properties";
     public static final String defaultDiscoveryPath = "plugins";
+    public static final String defaultEstacionesPath = "estaciones.txt";
 
     public static FerroNorte create(String propertiesPath)
             throws IOException, IllegalArgumentException {
@@ -24,6 +25,7 @@ public class FactoryFerroNorte {
         var dr = new Discoverer<>(MedioComunicacion.class);
         String pluginsPath = cfg.getProperty("discoveryPath");
         Set<MedioComunicacion> plugins = dr.discover(pluginsPath);
+        System.out.println(plugins.toString());
         LectorEstaciones lectorEstaciones = new LectorEstaciones();
         List<String> estaciones = lectorEstaciones.leerEstaciones(cfg.getProperty("estacionesPath"));
 
@@ -38,6 +40,7 @@ public class FactoryFerroNorte {
                 propertiesPath = defaultConfigPath;
             else {
                 result.setProperty("discoveryPath", defaultDiscoveryPath);
+                result.setProperty("estacionesPath", defaultEstacionesPath);
                 return result;
             }
         }

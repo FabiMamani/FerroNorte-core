@@ -1,6 +1,6 @@
 package interfaces;
 
-public interface MedioComunicacion {
-    public void enviarComunicacion();
-    public String obtenerNombre();
+public interface MedioComunicacion extends Observador{
+    public void enviarComunicacion(String estacion);
+    String obtenerNombre();
 }
