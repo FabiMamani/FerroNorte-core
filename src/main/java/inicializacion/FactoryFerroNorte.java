@@ -22,10 +22,19 @@ public class FactoryFerroNorte {
     public static FerroNorte create(String propertiesPath)
             throws IOException, IllegalArgumentException {
         Properties cfg = loadConfig(propertiesPath);
-        var dr = new Discoverer<>(MedioComunicacion.class);
+        //var dr = new Discoverer<>(MedioComunicacion.class);
         String pluginsPath = cfg.getProperty("discoveryPath");
+        Discovery dr = new Discovery();
         Set<MedioComunicacion> plugins = dr.discover(pluginsPath);
-        System.out.println(plugins.toString());
+        for (MedioComunicacion plugin : plugins) {
+            if (plugin == null){
+                System.out.println("Verificar null");
+            }else {
+                System.out.println("Plugin encontrado: " + plugin.obtenerNombre());
+            }
+
+        }
+
         LectorEstaciones lectorEstaciones = new LectorEstaciones();
         List<String> estaciones = lectorEstaciones.leerEstaciones(cfg.getProperty("estacionesPath"));
 
