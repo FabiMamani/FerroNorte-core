@@ -35,10 +35,7 @@ public class FactoryFerroNorte {
 
         }
 
-        LectorEstaciones lectorEstaciones = new LectorEstaciones();
-        List<String> estaciones = lectorEstaciones.leerEstaciones(cfg.getProperty("estacionesPath"));
-
-        return new FerroNorte(plugins, estaciones);
+        return new FerroNorte(plugins);
     }
 
     static Properties loadConfig(String propertiesPath)
