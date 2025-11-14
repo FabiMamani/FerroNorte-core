@@ -5,11 +5,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.Properties;
 import java.util.Set;
 import aplicacion.FerroNorte;
-import aplicacion.LectorEstaciones;
 import interfaces.MedioComunicacion;
 
 
@@ -35,10 +33,7 @@ public class FactoryFerroNorte {
 
         }
 
-        LectorEstaciones lectorEstaciones = new LectorEstaciones();
-        List<String> estaciones = lectorEstaciones.leerEstaciones(cfg.getProperty("estacionesPath"));
-
-        return new FerroNorte(plugins, estaciones);
+        return new FerroNorte(plugins);
     }
 
     static Properties loadConfig(String propertiesPath)
