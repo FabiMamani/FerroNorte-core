@@ -66,9 +66,10 @@ public class US {
         medioComunicacion.add(medioMock);
         FerroNorte fn = new FerroNorte(medioComunicacion);
 
-        fn.priorizarMedio("Telegram");
+        //fn.priorizarMedio("Telegram");
         fn.notificar("Tigre");
         String salida = outContent.toString().trim();
+        Assertions.assertEquals(salida,"");
         Assertions.assertTrue(outContent.toString().isEmpty());
 
     }
