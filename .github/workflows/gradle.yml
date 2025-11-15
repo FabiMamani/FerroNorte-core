@@ -28,14 +28,15 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build
-        run: ./gradlew clean assemble  # solo compila, no testea
+        run: ./gradlew clean assemble
+
 
   # --------------------------------------------------
   # 2) TEST JOB
   # --------------------------------------------------
   test:
     runs-on: ubuntu-latest
-    needs: build   # SOLO corre si build pasó ok
+    needs: build
     steps:
       - uses: actions/checkout@v4
 
@@ -54,7 +55,7 @@ jobs:
       - name: Run Tests
         run: ./gradlew test --info
 
-      # Guardar resultados de tests como artefacto (opcional)
+      # Guardar reporte HTML
       - name: Store Test Reports
         if: always()
         uses: actions/upload-artifact@v4
@@ -62,12 +63,51 @@ jobs:
           name: test-report
           path: build/reports/tests/test
 
+      # ------------------------------------------------------
+      # GENERAR REPORTE DE ESTADO DE TESTS
+      # ------------------------------------------------------
+      - name: Generate test summary report
+        if: always()
+        run: |
+          echo "Java Test Execution Summary" > test-summary.txt
+          echo "============================" >> test-summary.txt
+          echo "Run date: $(date)" >> test-summary.txt
+          echo "" >> test-summary.txt
+
+          # Analizar resultados usando archivos XML generados por JUnit
+          total=$(grep -R "<testsuite" build/test-results/test | wc -l)
+          failures=$(grep -R "failures=\"[1-9]" build/test-results/test | wc -l)
+          errors=$(grep -R "errors=\"[1-9]" build/test-results/test | wc -l)
+
+          echo "Total test suites: $total" >> test-summary.txt
+          echo "Failures: $failures" >> test-summary.txt
+          echo "Errors: $errors" >> test-summary.txt
+          echo "" >> test-summary.txt
+
+          if [[ $failures -eq 0 && $errors -eq 0 ]]; then
+            echo "STATUS: SUCCESS" >> test-summary.txt
+          else
+            echo "STATUS: FAILED" >> test-summary.txt
+          fi
+
+          echo "" >> test-summary.txt
+          echo "HTML detailed report available in /build/reports/tests/test/index.html" >> test-summary.txt
+
+      # Guardar el reporte como artefacto
+      - name: Upload test summary
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-summary
+          path: test-summary.txt
+
+
   # --------------------------------------------------
   # 3) PUBLISH JOB
   # --------------------------------------------------
   publish:
     runs-on: ubuntu-latest
-    needs: test   # SOLO corre si build y test pasaron
+    needs: test
     permissions:
       contents: read
       packages: write
